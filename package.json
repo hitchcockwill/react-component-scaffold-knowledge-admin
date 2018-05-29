@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "scaffold": "./componentScaffold.js"
+    "ska": "./componentScaffold.js"
   },
   "dependencies": {
     "shelljs": "^0.8.1"

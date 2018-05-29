@@ -1,174 +1,67 @@
-const componentTemplate = (jsxName, scssName, scssSelectorName) => `// @flow
-import styles from './${scssName}.scss';
+const componentTemplate = (
+  componentName,
+  kebabName,
+  scssSelectorName
+) => `import React from 'react';
+import styles from './${kebabName}.module.scss';
 
-type Props = {
-//   fillInProps: any
-};
+interface IProps {}
 
-@cssModule(styles)
-export default class ${jsxName} extends React.PureComponent<Props> {
+export default class ${componentName} extends React.Component<IProps, any> {
   render() {
-    return <div styleName="${scssSelectorName}">${jsxName} Component</div>;
+    return <div styleName="${scssSelectorName}">${componentName} Component</div>;
   }
 }
 
 `;
 
-const scssTemplate = scssSelectorName => `@import '~sass-mq';
-@import '~styles/shared';
+const scssTemplate = scssSelectorName => `@import '~assets/styles/shared';
 
 .${scssSelectorName} {
   border: solid blue 1px;
 }
 
-@include mq($from: $mobile-xl) {}
 
 `;
 
-const indexTemplate = jsxName => `import ${jsxName} from './${jsxName}';
+const indexTemplate = (
+  componentName,
+  kebabName
+) => `import ${componentName} from './${kebabName}';
 
-export default ${jsxName};
+export default ${componentName};
 
 `;
 
-const componentTestTemplate = jsxName => `import {makeShallowRender} from 'test/helpers/testHelper';
-import ${jsxName} from './${jsxName}';
+const componentTestTemplate = (
+  componentName,
+  kebabName
+) => `import { makeShallowRender } from 'test/helpers/test-helpers';
+import ${componentName} from './${kebabName}';
 
-const shallow${jsxName} = makeShallowRender(${jsxName});
+const shallow${componentName} = makeShallowRender(${componentName});
 
-describe('<${jsxName} />', () => {
+describe('<${componentName} />', () => {
   let mockProps;
 
   beforeEach(() => {
     mockProps = {};
   });
 
-  it('renders <${jsxName} />', () => {
+  it('renders <${componentName} />', () => {
 
-    const wrapper = shallow${jsxName}(mockProps);
+    const wrapper = shallow${componentName}(mockProps);
 
     expect(wrapper).toMatchSnapshot();
   });
-  // it('shows "accept answer" and "verify answer" buttons if the props are true', () => {
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   expect(wrapper.find('[data-ref="accept-answer"]')).toExist();
-  //   expect(wrapper.find('[data-ref="verify-answer"]')).toExist();
-  //   expect(wrapper).toMatchSnapshot();
-  // });
-
-  // it('displays the verified button with no click handler if isVerified is true and canVerify is false', () => {
-  //   mockProps = {...mockProps, isVerified: true, canVerify: false};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   const verifyButton = wrapper.find('[data-ref="verify-answer"]');
-
-  //   expect(verifyButton).toExist();
-  //   expect(verifyButton).toHaveClassName('selected');
-  //   expect(verifyButton).toHaveClassName('noclick');
-  //   expect(verifyButton.props().onClick).toBe(null);
-  //   expect(wrapper).toMatchSnapshot();
-  // });
-
-  // it('displays the verified button with a click handler if isVerified is true and canVerify is true', () => {
-  //   mockProps = {...mockProps, isVerified: true, canVerify: true};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   const verifyButton = wrapper.find('[data-ref="verify-answer"]');
-
-  //   expect(verifyButton).toExist();
-  //   expect(verifyButton).toHaveClassName('selected');
-  //   expect(verifyButton).not.toHaveClassName('noclick');
-  //   expect(verifyButton.props().onClick).toBe(mockProps.handleToggleVerified);
-  //   expect(wrapper).toMatchSnapshot();
-  // });
-
-  // it('calls handleToggleVerified() when verify button is clicked', () => {
-  //   mockProps = {...mockProps, isVerified: false, canVerify: true};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   expect(mockProps.handleToggleVerified).not.toHaveBeenCalled();
-
-  //   const verifyButton = wrapper.find('[data-ref="verify-answer"]');
-  //   verifyButton.simulate('click');
-
-  //   expect(mockProps.handleToggleVerified).toHaveBeenCalledTimes(1);
-  // });
-
-  // it('displays the accepted button with no click handler if isAccepted is true and canAccept is false', () => {
-  //   mockProps = {...mockProps, isAccepted: true, canAccept: false};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   const acceptButton = wrapper.find('[data-ref="accept-answer"]');
-
-  //   expect(acceptButton).toExist();
-  //   expect(acceptButton).toHaveClassName('selected');
-  //   expect(acceptButton).toHaveClassName('noclick');
-  //   expect(acceptButton.props().onClick).toBe(null);
-  //   expect(wrapper).toMatchSnapshot();
-  // });
-
-  // it('displays the accepted button with a click handler if isAccepted is true and canAccept is true', () => {
-  //   mockProps = {...mockProps, isAccepted: true, canAccept: true};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   const acceptButton = wrapper.find('[data-ref="accept-answer"]');
-
-  //   expect(acceptButton).toExist();
-  //   expect(acceptButton).toHaveClassName('selected');
-  //   expect(acceptButton).not.toHaveClassName('noclick');
-  //   expect(acceptButton.props().onClick).toBe(mockProps.handleToggleAccepted);
-  //   expect(wrapper).toMatchSnapshot();
-  // });
-
-  // it('calls handleToggleAccepted() when verify button is clicked', () => {
-  //   mockProps = {...mockProps, isAccepted: false, canAccept: true};
-  //   const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //   expect(mockProps.handleToggleAccepted).not.toHaveBeenCalled();
-
-  //   const acceptButton = wrapper.find('[data-ref="accept-answer"]');
-  //   acceptButton.simulate('click');
-
-  //   expect(mockProps.handleToggleAccepted).toHaveBeenCalledTimes(1);
-  // });
-
-  // describe('accept/verify button pending states', () => {
-  //   const verifyRef = '[data-ref="verify-answer"]';
-  //   const acceptRef = '[data-ref="accept-answer"]';
-
-  //   it('disables the verify button when pending', () => {
-  //     mockProps = {...mockProps, isVerifyPending: false};
-  //     const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //     expect(wrapper.find(verifyRef)).not.toBeDisabled();
-
-  //     wrapper.setProps({isVerifyPending: true});
-
-  //     expect(wrapper.find(verifyRef)).toBeDisabled();
-  //     expect(wrapper).toMatchSnapshot();
-  //   });
-
-  //   it('disables the accept button when pending', () => {
-  //     mockProps = {...mockProps, isAcceptPending: false};
-  //     const wrapper = shallowAnswerAcceptVerify(mockProps);
-
-  //     expect(wrapper.find(acceptRef)).not.toBeDisabled();
-
-  //     wrapper.setProps({isAcceptPending: true});
-
-  //     expect(wrapper.find(acceptRef)).toBeDisabled();
-  //     expect(wrapper).toMatchSnapshot();
-  //   });
-  // });
 });
 
 `;
 
-const containerTemplate = jsxName => `// @flow
+const containerTemplate = componentName => `import React from 'react';
 
 import {connect} from 'react-redux';
-// import ${jsxName} from 'components/${jsxName}';
+// import ${componentName} from 'components/${componentName}';
 type Props = {};
 
 const mapStateToProps = (state) => ({
@@ -179,29 +72,29 @@ const mapDispatchToProps = {
   fillMeInFunc: () => ({fillMeIn: true})
 };
 
-export class ${jsxName}Container extends React.PureComponent<Props> {
+export class ${componentName}Container extends React.PureComponent<Props> {
 
   render = () => {
     // const {fillMeIn} = this.props;
 
     return (
-      <div>${jsxName}Container</div>
+      <div>${componentName}Container</div>
     );
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(${jsxName}Container);
+export default connect(mapStateToProps, mapDispatchToProps)(${componentName}Container);
 
 `;
 
-const containerTestTemplate = jsxName => `
+const containerTestTemplate = componentName => `
 import {makeShallowRender} from 'test/helpers/testHelper';
-import {${jsxName}Container} from './${jsxName}Container';
-// import ${jsxName} from 'components/${jsxName}';
+import {${componentName}Container} from './${componentName}Container';
+// import ${componentName} from 'components/${componentName}';
 
-const shallow${jsxName}Container = makeShallowRender(${jsxName}Container);
+const shallow${componentName}Container = makeShallowRender(${componentName}Container);
 
-describe('<${jsxName}Container />', () => {
+describe('<${componentName}Container />', () => {
   let mockProps;
 
   beforeEach(() => {
@@ -209,9 +102,9 @@ describe('<${jsxName}Container />', () => {
   });
 
 
-  it('renders <${jsxName}Container />', () => {
+  it('renders <${componentName}Container />', () => {
 
-    const wrapper = shallow${jsxName}Container(mockProps);
+    const wrapper = shallow${componentName}Container(mockProps);
 
     expect(wrapper).toMatchSnapshot();
   });

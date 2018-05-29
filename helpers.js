@@ -5,7 +5,7 @@ const path = require("path");
 
 const pathName = process.cwd();
 
-const basePath = pathName.match(/.+?(?=\/knowledge-web)/);
+const basePath = pathName.match(/.+?(?=\/knowledge-admin)/);
 
 const {
   scssTemplate,
@@ -16,64 +16,73 @@ const {
   containerTestTemplate
 } = require("./templates.js");
 
-function component(jsxName) {
-  exec(`mkdir ${basePath}/knowledge-web/src/app/components/${jsxName}`, () => {
-    makeComponentFiles(jsxName);
-  });
-}
+function component(componentName) {
+  const folderName = componentName.split(/(?=[A-Z])/).join("-");
 
-function makeComponentFiles(jsxName) {
-  const scssName = jsxName[0].toLowerCase() + jsxName.slice(1);
-  const scssSelectorName = jsxName
-    .split(/(?=[A-Z])/)
-    .join("-")
-    .toLowerCase();
-
-  fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/components/${jsxName}/${jsxName}.jsx`,
-    componentTemplate(jsxName, scssName, scssSelectorName),
-    "utf8"
-  );
-  fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/components/${jsxName}/${jsxName}.spec.js`,
-    componentTestTemplate(jsxName),
-    "utf8"
-  );
-  fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/components/${jsxName}/${scssName}.scss`,
-    scssTemplate(scssSelectorName),
-    "utf8"
-  );
-  fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/components/${jsxName}/index.js`,
-    indexTemplate(jsxName),
-    "utf8"
-  );
-}
-
-function container(jsxName) {
   exec(
-    `mkdir ${basePath}/knowledge-web/src/app/containers/${jsxName}Container`,
+    `mkdir ${basePath}/knowledge-admin/src/app/components/${folderName}`,
     () => {
-      makeContainerFiles(jsxName);
+      makeComponentFiles(componentName);
     }
   );
 }
 
-function makeContainerFiles(jsxName) {
+function makeComponentFiles(componentName) {
+  const folderName = componentName.split(/(?=[A-Z])/).join("-");
+  const kebabName = componentName
+    .split(/(?=[A-Z])/)
+    .join("-")
+    .toLowerCase();
+  const scssSelectorName =
+    componentName[0].toLowerCase() + componentName.slice(1);
+
   fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/containers/${jsxName}Container/${jsxName}Container.jsx`,
-    containerTemplate(jsxName),
+    `${basePath}/knowledge-admin/src/app/components/${folderName}/${kebabName}.tsx`,
+    componentTemplate(componentName, kebabName, scssSelectorName),
     "utf8"
   );
   fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/containers/${jsxName}Container/${jsxName}Container.spec.js`,
-    containerTestTemplate(jsxName),
+    `${basePath}/knowledge-admin/src/app/components/${folderName}/${kebabName}.spec.tsx`,
+    componentTestTemplate(componentName, kebabName),
     "utf8"
   );
   fs.writeFileSync(
-    `${basePath}/knowledge-web/src/app/containers/${jsxName}Container/index.js`,
-    indexTemplate(`${jsxName}Container`),
+    `${basePath}/knowledge-admin/src/app/components/${folderName}/${kebabName}.module.scss`,
+    scssTemplate(scssSelectorName),
+    "utf8"
+  );
+  fs.writeFileSync(
+    `${basePath}/knowledge-admin/src/app/components/${folderName}/index.ts`,
+    indexTemplate(componentName, kebabName),
+    "utf8"
+  );
+}
+
+function container(componentName) {
+  const folderName = componentName.split(/(?=[A-Z])/).join("-");
+
+  exec(
+    `mkdir ${basePath}/knowledge-admin/src/app/containers/${folderName}Container`,
+    () => {
+      makeContainerFiles(componentName);
+    }
+  );
+}
+
+function makeContainerFiles(componentName) {
+  fs.writeFileSync(
+    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/${componentName}Container.jsx`,
+    containerTemplate(componentName),
+    "utf8"
+  );
+  fs.writeFileSync(
+    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/${componentName}Container.spec.js`,
+    containerTestTemplate(componentName),
+    "utf8"
+  );
+  fs.writeFileSync(
+    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/index.js`,
+    indexTemplate(`${componentName}Container`),
     "utf8"
   );
 }
