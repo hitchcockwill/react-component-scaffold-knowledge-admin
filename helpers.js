@@ -17,7 +17,10 @@ const {
 } = require("./templates.js");
 
 function component(componentName) {
-  const folderName = componentName.split(/(?=[A-Z])/).join("-");
+  const folderName = componentName
+    .split(/(?=[A-Z])/)
+    .join("-")
+    .toLowerCase();
 
   exec(
     `mkdir ${basePath}/knowledge-admin/src/app/components/${folderName}`,
@@ -28,7 +31,10 @@ function component(componentName) {
 }
 
 function makeComponentFiles(componentName) {
-  const folderName = componentName.split(/(?=[A-Z])/).join("-");
+  const folderName = componentName
+    .split(/(?=[A-Z])/)
+    .join("-")
+    .toLowerCase();
   const kebabName = componentName
     .split(/(?=[A-Z])/)
     .join("-")
@@ -59,30 +65,35 @@ function makeComponentFiles(componentName) {
 }
 
 function container(componentName) {
-  const folderName = componentName.split(/(?=[A-Z])/).join("-");
+  const folderName = componentName
+    .split(/(?=[A-Z])/)
+    .join("-")
+    .toLowerCase();
 
   exec(
-    `mkdir ${basePath}/knowledge-admin/src/app/containers/${folderName}Container`,
+    `mkdir ${basePath}/knowledge-admin/src/app/containers/${folderName}-container`,
     () => {
-      makeContainerFiles(componentName);
+      makeContainerFiles(componentName, `${folderName}-container`);
     }
   );
 }
 
-function makeContainerFiles(componentName) {
+function makeContainerFiles(componentName, folderName) {
+  const componentFolderName = folderName.replace(/-container/, "");
+
   fs.writeFileSync(
-    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/${componentName}Container.jsx`,
-    containerTemplate(componentName),
+    `${basePath}/knowledge-admin/src/app/containers/${folderName}/${folderName}.tsx`,
+    containerTemplate(componentName, componentFolderName),
     "utf8"
   );
   fs.writeFileSync(
-    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/${componentName}Container.spec.js`,
-    containerTestTemplate(componentName),
+    `${basePath}/knowledge-admin/src/app/containers/${folderName}/${folderName}.spec.tsx`,
+    containerTestTemplate(componentName, folderName),
     "utf8"
   );
   fs.writeFileSync(
-    `${basePath}/knowledge-admin/src/app/containers/${componentName}Container/index.js`,
-    indexTemplate(`${componentName}Container`),
+    `${basePath}/knowledge-admin/src/app/containers/${folderName}/index.ts`,
+    indexTemplate(componentName, folderName),
     "utf8"
   );
 }

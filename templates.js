@@ -9,7 +9,7 @@ interface IProps {}
 
 export default class ${componentName} extends React.Component<IProps, any> {
   render() {
-    return <div styleName="${scssSelectorName}">${componentName} Component</div>;
+    return <div className={styles.${scssSelectorName}}>${componentName} Component</div>;
   }
 }
 
@@ -58,11 +58,15 @@ describe('<${componentName} />', () => {
 
 `;
 
-const containerTemplate = componentName => `import React from 'react';
+const containerTemplate = (
+  componentName,
+  componentFolderName
+) => `import React from 'react';
 
 import {connect} from 'react-redux';
-// import ${componentName} from 'components/${componentName}';
-type Props = {};
+// import ${componentName} from 'components/${componentFolderName}';
+
+interface IProps {}
 
 const mapStateToProps = (state) => ({
   fillMeIn: {fillMeIn: state}
@@ -72,9 +76,9 @@ const mapDispatchToProps = {
   fillMeInFunc: () => ({fillMeIn: true})
 };
 
-export class ${componentName}Container extends React.PureComponent<Props> {
+export class ${componentName}Container extends React.PureComponent<IProps>  {
 
-  render = () => {
+  render () {
     // const {fillMeIn} = this.props;
 
     return (
@@ -87,10 +91,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(${componentName}Cont
 
 `;
 
-const containerTestTemplate = componentName => `
-import {makeShallowRender} from 'test/helpers/testHelper';
-import {${componentName}Container} from './${componentName}Container';
-// import ${componentName} from 'components/${componentName}';
+const containerTestTemplate = (componentName, folderName) => `
+import {makeShallowRender} from 'test/helpers/test-helpers';
+import {${componentName}Container} from './${folderName}';
+// import ${componentName} from 'components/${folderName}';
 
 const shallow${componentName}Container = makeShallowRender(${componentName}Container);
 
