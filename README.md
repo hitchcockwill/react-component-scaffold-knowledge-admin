@@ -5,7 +5,7 @@ Bootstrap React components and containers in seconds using react-component-scaff
 
 Clone the repo: git@github.com:jenjwong/react-component-scaffold-knowledge-admin.git
 
-Inside of react-component-scaffold run `npm link`.
+After cloning, ***_cd_*** into react-component-scaffold-knowledge-admin and run `npm link`.
 
 Executing _ska component Croissant_ in the terminal inside knowledge-admin will create the following file structure populated with boilerplate in the Components folder.
 
@@ -30,4 +30,4 @@ CroissantContainer
     ├── CroissantContainer.spec.tsx
 
 ```
-Customize module by editing your local copy of the react-component-scaffold repo and running `npm link`
+Customize module by editing your local copy of the react-component-scaffold repo and running `npm link` to update package with changes.
