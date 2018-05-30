@@ -7,7 +7,7 @@ Clone the repo: git@github.com:jenjwong/react-component-scaffold-knowledge-admin
 
 After cloning, ***_cd_*** into react-component-scaffold-knowledge-admin and run `npm link`.
 
-Executing _ska component Croissant_ in the terminal inside knowledge-admin will create the following file structure populated with boilerplate in the Components folder.
+Executing _ska component Croissant_ in the terminal inside knowledge-admin will create the following file structure populated with boilerplate in the appropriate folders.
 
 ```
 $ ska component Croissant
