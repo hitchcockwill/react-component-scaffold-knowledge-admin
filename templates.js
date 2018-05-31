@@ -5,9 +5,9 @@ const componentTemplate = (
 ) => `import React from 'react';
 import styles from './${kebabName}.module.scss';
 
-interface IProps {}
+export interface IProps {}
 
-export default class ${componentName} extends React.Component<IProps, any> {
+export default class ${componentName} extends React.Component<IProps> {
   render() {
     return <div className={styles.${scssSelectorName}}>${componentName} Component</div>;
   }
@@ -37,12 +37,12 @@ const componentTestTemplate = (
   componentName,
   kebabName
 ) => `import { makeShallowRender } from 'test/helpers/test-helpers';
-import ${componentName} from './${kebabName}';
+import ${componentName}, { IProps } from './${kebabName}';
 
-const shallow = makeShallowRender(${componentName});
+const shallow = makeShallowRender<IProps>(${componentName});
 
 describe('<${componentName} />', () => {
-  let mockProps;
+  let mockProps: IProps;
 
   beforeEach(() => {
     mockProps = {};
@@ -60,10 +60,10 @@ const containerTemplate = (
   componentName,
   componentFolderName
 ) => `import React from 'react';
-import {connect} from 'react-redux';
-// import ${componentName} from 'components/${componentFolderName}';
+import { connect } from 'react-redux';
+// import ${componentName} from 'app/components/${componentFolderName}';
 
-interface IProps {}
+export interface IProps {}
 
 const mapStateToProps = (state) => ({
   fillMeIn: {fillMeIn: state}
@@ -89,14 +89,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(${componentName}Cont
 `;
 
 const containerTestTemplate = (componentName, folderName) => `
-import {makeShallowRender} from 'test/helpers/test-helpers';
-import {${componentName}Container} from './${folderName}';
-// import ${componentName} from 'components/${folderName}';
+import { makeShallowRender } from 'test/helpers/test-helpers';
+import { ${componentName}Container, IProps } from './${folderName}';
+// import ${componentName} from 'app/components/${folderName}';
 
-const shallow= makeShallowRender(${componentName}Container);
+const shallow= makeShallowRender<IProps>(${componentName}Container);
 
 describe('<${componentName}Container />', () => {
-  let mockProps;
+  let mockProps: IProps;
 
   beforeEach(() => {
     mockProps = {};
