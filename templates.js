@@ -39,7 +39,7 @@ const componentTestTemplate = (
 ) => `import { makeShallowRender } from 'test/helpers/test-helpers';
 import ${componentName} from './${kebabName}';
 
-const shallow${componentName} = makeShallowRender(${componentName});
+const shallow = makeShallowRender(${componentName});
 
 describe('<${componentName} />', () => {
   let mockProps;
@@ -49,9 +49,7 @@ describe('<${componentName} />', () => {
   });
 
   it('renders <${componentName} />', () => {
-
-    const wrapper = shallow${componentName}(mockProps);
-
+    const wrapper = shallow(mockProps);
     expect(wrapper).toMatchSnapshot();
   });
 });
@@ -62,7 +60,6 @@ const containerTemplate = (
   componentName,
   componentFolderName
 ) => `import React from 'react';
-
 import {connect} from 'react-redux';
 // import ${componentName} from 'components/${componentFolderName}';
 
@@ -96,7 +93,7 @@ import {makeShallowRender} from 'test/helpers/test-helpers';
 import {${componentName}Container} from './${folderName}';
 // import ${componentName} from 'components/${folderName}';
 
-const shallow${componentName}Container = makeShallowRender(${componentName}Container);
+const shallow= makeShallowRender(${componentName}Container);
 
 describe('<${componentName}Container />', () => {
   let mockProps;
@@ -105,11 +102,8 @@ describe('<${componentName}Container />', () => {
     mockProps = {};
   });
 
-
   it('renders <${componentName}Container />', () => {
-
-    const wrapper = shallow${componentName}Container(mockProps);
-
+    const wrapper = shallow(mockProps);
     expect(wrapper).toMatchSnapshot();
   });
 });
